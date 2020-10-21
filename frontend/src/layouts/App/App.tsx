@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 import Sidebar from 'layouts/Sidebar';
+import Legend from 'components/Legend';
 
 function App() {
   const theme = createMuiTheme({
@@ -18,6 +19,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Sidebar />
+      <Legend />
     </ThemeProvider>
   );
 }

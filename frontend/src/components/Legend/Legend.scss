@@ -1,0 +1,14 @@
+.Bullet {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Bullet-content {
+  display: flex;
+}
+
+.Bullet-color-p {
+  color: #212121;
+  margin: 2px 0 0 8px;
+}

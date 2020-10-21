@@ -44,7 +44,10 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
     },
     menuButton: {
-      marginRight: 36,
+      marginRight: 24,
+      '& > span': {
+        marginLeft: '-8px',
+      },
     },
     hide: {
       display: 'none',
@@ -69,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowX: 'hidden',
       width: theme.spacing(7) + 1,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
+        width: theme.spacing(7) + 4,
       },
     },
     toolbar: {
