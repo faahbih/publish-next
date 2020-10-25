@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://hguerra.github.io/publish-next",
   "dependencies": {
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
@@ -13,6 +14,7 @@
     "@types/react": "16.9.52",
     "@types/react-dom": "16.9.8",
     "chart.js": "2.9.4",
+    "gh-pages": "3.1.0",
     "leaflet": "1.7.1",
     "node-sass": "4.14.1",
     "react": "16.14.0",
@@ -33,7 +35,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "git lfs update --force && cd ./node_modules/husky && npm run install -- --append"
+    "postinstall": "git lfs update --force && cd ./node_modules/husky && npm run install -- --append",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
