@@ -89,18 +89,18 @@ function chartDataFactory(
         label: 'FC',
         fill: false,
         lineTension: 0.1,
-        backgroundColor: 'rgba(0, 128, 0, 0.8)',
+        backgroundColor: 'rgba(0, 128, 0, 1)',
         borderColor: 'rgba(0, 128, 0, 1)',
         borderCapStyle: 'butt',
         borderDash: [],
         borderDashOffset: 0.0,
         borderJoinStyle: 'miter',
         pointBorderColor: 'rgba(0, 128, 0, 1)',
-        pointBackgroundColor: '#fff',
+        pointBackgroundColor: 'rgba(0, 128, 0, 1)',
         pointBorderWidth: 1,
         pointHoverRadius: 5,
         pointHoverBackgroundColor: 'rgba(0, 128, 0, 1)',
-        pointHoverBorderColor: 'rgba(220,220,220, 1)',
+        pointHoverBorderColor: 'rgba(0, 128, 0, 1)',
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
@@ -110,18 +110,18 @@ function chartDataFactory(
         label: 'NoFC',
         fill: false,
         lineTension: 0.1,
-        backgroundColor: 'rgba(235,75,53, 0.8)',
+        backgroundColor: 'rgba(235,75,53, 1)',
         borderColor: 'rgba(235,75,53, 1)',
         borderCapStyle: 'butt',
         borderDash: [],
         borderDashOffset: 0.0,
         borderJoinStyle: 'miter',
         pointBorderColor: 'rgba(235,75,53, 1)',
-        pointBackgroundColor: '#fff',
+        pointBackgroundColor: 'rgba(235,75,53, 1)',
         pointBorderWidth: 1,
         pointHoverRadius: 5,
         pointHoverBackgroundColor: 'rgba(235,75,53, 1)',
-        pointHoverBorderColor: 'rgba(220,220,220, 1)',
+        pointHoverBorderColor: 'rgba(235,75,53, 1)',
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
@@ -151,6 +151,17 @@ function chartOptionsFactory() {
         },
       ],
     },
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem: any, data: any) {
+          const label = data.datasets[tooltipItem.datasetIndex].label || '';
+          const value = tooltipItem.yLabel
+            .toFixed(2)
+            .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+          return `${label}: ${value}`;
+        },
+      },
+    },
   };
 }
 
@@ -159,15 +170,36 @@ export default function Report({ open, properties, onClose }: ReportProps) {
   const descriptionElementRef = React.useRef<HTMLElement>(null);
 
   const scenariosNames = ['N', 'F'];
-  const labels = ['2010', '2020', '2030', '2040', '2050'];
+  const labels = [
+    '2000',
+    '2005',
+    '2010',
+    '2015',
+    '2020',
+    '2025',
+    '2030',
+    '2035',
+    '2040',
+    '2045',
+    '2050',
+  ];
+
   const datasetNames = ['Soy', 'Crp', 'Grs', 'Nati', 'CNat'];
+  const datasetLabels = [
+    'Soybean',
+    'Cropland',
+    'Grassland',
+    'Native Vegetation',
+    'Native Vegetation Conversion',
+  ];
 
   const charts: any = [];
   if (properties) {
     const datasets = datasetsFactory(properties, scenariosNames, labels);
-    datasetNames.forEach((selectedName: string) => {
+    datasetNames.forEach((selectedName: string, index: number) => {
+      const name = datasetLabels[index];
       charts.push({
-        name: selectedName,
+        name,
         data: chartDataFactory(selectedName, labels, datasets),
         options: chartOptionsFactory(),
       });
