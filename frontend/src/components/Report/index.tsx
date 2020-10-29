@@ -125,7 +125,7 @@ function chartDataFactory(
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: datasets.Soy.N.data,
+        data: property.N.data,
       },
     ],
   };
@@ -146,7 +146,7 @@ function chartOptionsFactory() {
         {
           scaleLabel: {
             display: true,
-            labelString: 'Native Vegetation (Mha)',
+            labelString: 'Area (Mha)',
           },
         },
       ],
