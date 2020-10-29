@@ -78,10 +78,10 @@ function datasetsFactory(
 
 function chartDataFactory(
   datasetName: string,
-  labels: string[],
   datasets: { [name: string]: any },
 ) {
   const property = datasets[datasetName];
+  const labels = property.F.labels;
   return {
     labels,
     datasets: [
@@ -200,7 +200,7 @@ export default function Report({ open, properties, onClose }: ReportProps) {
       const name = datasetLabels[index];
       charts.push({
         name,
-        data: chartDataFactory(selectedName, labels, datasets),
+        data: chartDataFactory(selectedName, datasets),
         options: chartOptionsFactory(),
       });
     });
