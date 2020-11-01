@@ -1433,57 +1433,43 @@ $color-blue-gray-900: map-get(
  * =================================================================
  */
 
-$gv-primary-light: $color-blue-300;
-$gv-primary: $color-blue-500;
-$gv-primary-dark: $color-blue-700;
-$gv-primary-dark-blue: $color-blue-900;
+$color-primary-light: $color-blue-300;
+$color-primary: $color-blue-500;
+$color-primary-dark: $color-blue-700;
+$color-primary-dark-blue: $color-blue-900;
 
-$gv-accent-light: $color-orange-a200;
-$gv-accent: $color-orange-500;
-$gv-accent-dark: $color-orange-a700;
+$color-accent-light: $color-orange-a200;
+$color-accent: $color-orange-500;
+$color-accent-dark: $color-orange-a700;
 
 // STATUS
-$gv-danger: $color-red-a200;
-$gv-danger-dark: $color-red-500;
+$color-danger: $color-red-a200;
+$color-danger-dark: $color-red-500;
 
-$gv-warning: $color-amber-500;
+$color-warning: $color-amber-500;
 
-$gv-success: $color-green-500;
-$gv-success-light: #aedd7f;
+$color-success: $color-green-500;
+$color-success-light: #aedd7f;
 
 // GRAYS/BLACK
-$gv-black: $color-black;
-$gv-black-1: $color-gray-300; // $color-gray-1
-$gv-black-2: $color-gray-500; // $color-gray-2
-$gv-black-3: $color-gray-600; // $color-gray-3
-$gv-black-4: $color-gray-800; // $color-gray-4
-$gv-black-5: $color-gray-900; // $color-gray-5
+$color-black: $color-black;
+$color-black-1: $color-gray-300; // $color-gray-1
+$color-black-2: $color-gray-500; // $color-gray-2
+$color-black-3: $color-gray-600; // $color-gray-3
+$color-black-4: $color-gray-800; // $color-gray-4
+$color-black-5: $color-gray-900; // $color-gray-5
 
 // WHITE
-$gv-white: $color-white;
-$gv-white-dark: $color-grey-50;
+$color-white: $color-white;
+$color-white-dark: $color-grey-50;
 
 // Text recommendation black
-$gv-text-primary: $gv-black-5; // rgba($gv-black, .87);
-$gv-text-secondary: $gv-black-4; // rgba($gv-black, .60);
-$gv-text-hint: $gv-black-3; // rgba($gv-black, .38);
-$gv-dividers: $gv-black-2; // rgba($gv-black, .12);
+$color-text-primary: $color-black-5; // rgba($color-black, .87);
+$color-text-secondary: $color-black-4; // rgba($color-black, .60);
+$color-text-hint: $color-black-3; // rgba($color-black, .38);color-dividers: $color-black-2; // rgba($color-black, .12);
 
 // Text recommendation white
-$gv-text-primary-white: $color-text-primary-white;
-$gv-text-secondary-white: $color-text-secondary-white;
-$gv-text-hint-white: $color-text-hint-white;
-$gv-dividers: $color-dividers-white;
-
-/*
- * =================================================================
- * ||             The variables below are deprecated!             ||
- * =================================================================
-
- // GRAYS
-$color-gray-1: $color-gray-300;
-$color-gray-2: $color-gray-500;
-$color-gray-3: $color-gray-600;
-$color-gray-4: $color-gray-800;
-$color-gray-5: $color-gray-900;
- */
+$color-text-primary-white: $color-text-primary-white;
+$color-text-secondary-white: $color-text-secondary-white;
+$color-text-hint-white: $color-text-hint-white;
+$color-dividers: $color-dividers-white;

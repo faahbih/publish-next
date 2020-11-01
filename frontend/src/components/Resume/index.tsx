@@ -6,6 +6,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { createStyles, makeStyles } from '@material-ui/core';
+import Logo from '../../assets/img/restore-logo.png';
+import BMULogo from '../../assets/img/bmu-logo.png';
 
 type ResumeProps = {
   open: boolean;
@@ -20,6 +22,18 @@ const useStyles = makeStyles(() =>
       '&:hover': {
         backgroundColor: '#24806F',
       },
+    },
+    imgContent: {
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    imgBMULogo: {
+      height: 120,
+    },
+    imgLogo: {
+      marginLeft: 24,
+      height: 30,
     },
   }),
 );
@@ -90,9 +104,19 @@ export default function Resume({ open, onClose }: ResumeProps) {
             demand for agricultural commodities, and does not include any policy
             restrictions.
           </DialogContentText>
-          <DialogContentText variant="h6" style={{ marginBottom: '0' }}>
+          {/* <DialogContentText variant="h6" style={{ marginBottom: '0' }}>
             RESTORE+
-          </DialogContentText>
+          </DialogContentText> */}
+
+          <div className={classes.imgContent}>
+            <img
+              src={BMULogo}
+              className={classes.imgBMULogo}
+              alt="Restore+ logo"
+            />
+            <img src={Logo} className={classes.imgLogo} alt="Restore+ logo" />
+          </div>
+
           <DialogContentText variant="subtitle1" style={{ marginBottom: '0' }}>
             You can download the data used in this application by{' '}
             <a

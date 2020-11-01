@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { Line } from 'react-chartjs-2';
+import Typography from '@material-ui/core/Typography';
 
 type ReportProps = {
   open: boolean;
@@ -152,6 +153,7 @@ function chartOptionsFactory() {
       ],
     },
     tooltips: {
+      mode: 'label',
       callbacks: {
         label: function (tooltipItem: any, data: any) {
           const label = data.datasets[tooltipItem.datasetIndex].label || '';
@@ -218,7 +220,7 @@ export default function Report({ open, properties, onClose }: ReportProps) {
   return (
     <Dialog
       fullWidth={true}
-      maxWidth={'md'}
+      maxWidth={'sm'}
       open={open}
       onClose={onClose}
       scroll={scroll}
@@ -230,7 +232,20 @@ export default function Report({ open, properties, onClose }: ReportProps) {
         {charts.map((entry: { name: string; data: any; options: any }) => {
           return (
             <div key={entry.name}>
-              <DialogTitle id="alert-dialog-title">{entry.name}</DialogTitle>
+              <Typography
+                id="alert-dialog-title"
+                variant="h6"
+                gutterBottom
+                align="justify"
+              >
+                {entry.name}
+              </Typography>
+              <Typography variant="caption" display="block" gutterBottom>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
+                ratione sit iusto voluptate excepturi ex nam reprehenderit
+                voluptatum est laboriosam corporis delectus ab placeat
+                assumenda, nobis sapiente quos, dolorem earum?
+              </Typography>
               <Line data={entry.data} options={entry.options} />
             </div>
           );

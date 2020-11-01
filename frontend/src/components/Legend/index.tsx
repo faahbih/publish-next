@@ -1,10 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Icon from '@material-ui/core/Icon';
-import './style.scss';
+// import './style.scss';
+
 import { Typography } from '@material-ui/core';
 import { LegendValue, MapProperties } from 'containers/Types';
 
@@ -12,33 +13,38 @@ type LegendProps = {
   mapProperties: MapProperties;
 };
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 272,
-    position: 'absolute',
-    right: '16px',
-    top: '70px',
-    zIndex: 1100,
-  },
-  cardHeader: {
-    padding: '8px 16px',
-    background: '#212121',
-    color: 'white',
-    textTransform: 'uppercase',
-    '& span': {
-      fontSize: '16px',
-      fontWeight: 'bold',
-      letterSpacing: '.03em',
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      maxWidth: 272,
+      position: 'absolute',
+      right: '16px',
+      top: '70px',
+      zIndex: 1100,
+      [theme.breakpoints.down('xs')]: {
+        maxWidth: 180,
+      },
     },
-  },
-  title: {
-    fontSize: 14,
-    display: 'flex',
-    justifyContent: 'center',
-    padding: '8px 0 0',
-    marginBottom: 0,
-  },
-});
+    cardHeader: {
+      padding: '8px 16px',
+      background: '#212121',
+      color: 'white',
+      textTransform: 'uppercase',
+      '& span': {
+        fontSize: '16px',
+        fontWeight: 'bold',
+        letterSpacing: '.03em',
+      },
+    },
+    title: {
+      fontSize: 14,
+      display: 'flex',
+      justifyContent: 'center',
+      padding: '8px 0 0',
+      marginBottom: 0,
+    },
+  }),
+);
 
 function legendValuesFactory(mapProperties: MapProperties): LegendValue[] {
   const values: LegendValue[] = [];
@@ -73,11 +79,11 @@ export default function Legend({ mapProperties }: LegendProps) {
             No layers selected
           </Typography>
         ) : (
-          <div className="Bullet">
+          <div className="Legend">
             {values.map((value: LegendValue) => (
-              <div className="Bullet-content" key={value.label}>
+              <div className="Legend-content" key={value.label}>
                 <Icon style={{ color: value.fillColor }}>{value.icon}</Icon>
-                <p className="Bullet-color-p">{value.label}</p>
+                <p className="Legend-text">{value.label}</p>
               </div>
             ))}
           </div>

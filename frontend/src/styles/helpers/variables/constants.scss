@@ -31,11 +31,11 @@ $width-one-third-half: '(100% / 3.5)';
 $width-one-seventh: '(100% / 7)';
 
 // Borders
-$border-primary: solid 2px $gv-black-1;
+$border-primary: solid 2px $color-black-1;
 
 // Borders
-$border-primary: solid 2px $gv-black-1;
-$border-thin: solid 1px $gv-black-1;
+$border-primary: solid 2px $color-black-1;
+$border-thin: solid 1px $color-black-1;
 
 // Border Radius
 $border-radius-sm: 2px;
@@ -53,19 +53,19 @@ $border-radius-lg: 8px;
 %text {
   font-size: $font-body;
   line-height: $line-height-text;
-  color: $gv-black-4;
+  color: $color-black-4;
 }
 
 %title {
   font-size: $font-title;
   line-height: $line-height-title;
-  color: $gv-black-4;
+  color: $color-black-4;
 }
 
 %subtitle {
   font-size: $font-md;
   line-height: $line-height-text;
-  color: $gv-black-4;
+  color: $color-black-4;
 }
 
 //fonts
