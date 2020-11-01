@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { createStyles, makeStyles } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Logo from '../../assets/img/restore-logo.png';
 import BMULogo from '../../assets/img/bmu-logo.png';
 
@@ -14,7 +14,7 @@ type ResumeProps = {
   onClose: () => void;
 };
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     buttonDefault: {
       backgroundColor: '#24806F',
@@ -26,13 +26,25 @@ const useStyles = makeStyles(() =>
     imgContent: {
       display: 'flex',
       alignItems: 'center',
+      flexDirection: 'row',
       marginBottom: 8,
+      [theme.breakpoints.down('xs')]: {
+        flexDirection: 'column',
+        marginBottom: 16,
+      },
     },
     imgBMULogo: {
       height: 120,
+      marginBottom: 0,
+      [theme.breakpoints.down('xs')]: {
+        marginBottom: 16,
+      },
     },
     imgLogo: {
       marginLeft: 24,
+      [theme.breakpoints.down('xs')]: {
+        marginLeft: 0,
+      },
       height: 30,
     },
   }),
