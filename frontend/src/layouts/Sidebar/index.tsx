@@ -23,6 +23,7 @@ import Main from 'layouts/Main';
 import SidebarList from './SidebarList';
 import { Icon } from '@material-ui/core';
 import Resume from 'components/Resume';
+import SideContent from 'components/SideContent';
 
 const drawerWidth = 240;
 
@@ -196,6 +197,8 @@ export default function Sidebar() {
 
         <SidebarList />
       </Drawer>
+
+      <SideContent></SideContent>
 
       <Resume open={resumeOpen} onClose={handleResumeClose}></Resume>
       <main className={classes.content}>

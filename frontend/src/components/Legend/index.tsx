@@ -16,7 +16,7 @@ type LegendProps = {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      maxWidth: 272,
+      width: 272,
       position: 'absolute',
       right: '16px',
       top: '70px',
