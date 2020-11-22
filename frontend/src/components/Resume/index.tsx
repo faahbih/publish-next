@@ -47,6 +47,11 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       height: 30,
     },
+    contentDialogTitile: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
   }),
 );
 
@@ -76,14 +81,20 @@ export default function Resume({ open, onClose }: ResumeProps) {
         aria-describedby="scroll-dialog-description"
       >
         <DialogTitle id="scroll-dialog-title">
-          Future environmental and agricultural impacts of Brazil’s Forest Code
+          <div className={classes.contentDialogTitile}>
+            Future environmental and agricultural impacts of Brazil’s Forest
+            Code
+            <img src={Logo} className={classes.imgLogo} alt="Restore+ logo" />
+          </div>
         </DialogTitle>
+
         <DialogContent dividers={scroll === 'paper'}>
           <DialogContentText
             id="scroll-dialog-description"
             ref={descriptionElementRef}
             tabIndex={-1}
             align={'justify'}
+            style={{ marginBottom: '0' }}
           >
             This application presents the main results of the article{' '}
             <strong>
@@ -120,16 +131,10 @@ export default function Resume({ open, onClose }: ResumeProps) {
             RESTORE+
           </DialogContentText> */}
 
-          <div className={classes.imgContent}>
-            <img
-              src={BMULogo}
-              className={classes.imgBMULogo}
-              alt="Restore+ logo"
-            />
-            <img src={Logo} className={classes.imgLogo} alt="Restore+ logo" />
-          </div>
-
-          <DialogContentText variant="subtitle1" style={{ marginBottom: '0' }}>
+          <DialogContentText
+            variant="subtitle1"
+            style={{ marginBottom: '8px' }}
+          >
             You can download the data used in this application by{' '}
             <a
               href="https://www.dropbox.com/s/aj1rwz3bu9td66n/restoreplus.zip?raw=1"
@@ -140,6 +145,14 @@ export default function Resume({ open, onClose }: ResumeProps) {
             </a>
             .
           </DialogContentText>
+
+          <div className={classes.imgContent}>
+            <img
+              src={BMULogo}
+              className={classes.imgBMULogo}
+              alt="Restore+ logo"
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} className={classes.buttonDefault}>

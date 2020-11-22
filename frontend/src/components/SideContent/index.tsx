@@ -7,6 +7,10 @@ import {
   AccordionDetails,
   AccordionSummary,
   Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Tooltip,
   Typography,
 } from '@material-ui/core';
@@ -17,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       maxWidth: 275,
       position: 'absolute',
-      zIndex: 1200,
+      zIndex: 1199,
       left: 56,
       height: '100%',
     },
@@ -44,6 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
     chipSpacing: {
       margin: 8,
     },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+      marginLeft: '12px',
+    },
   }),
 );
 
@@ -57,6 +66,11 @@ export default function Legend() {
   const classes = useStyles();
   const handleClick = () => {
     console.info('You clicked the Chip.');
+  };
+
+  const [age, setAge] = React.useState('');
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setAge(event.target.value as string);
   };
 
   return (
@@ -82,16 +96,21 @@ export default function Legend() {
             <AccordionDetails className={classes.customAccordionDetails}>
               <Tooltip title={longText} arrow>
                 <Chip
-                  label="Limit"
+                  label="Brazil"
                   onClick={handleClick}
                   variant="outlined"
                   className={classes.chipSpacing}
                 />
               </Tooltip>
               <Chip
-                label="Regions"
+                label="Biomes"
                 onClick={handleClick}
                 variant="outlined"
+                style={{
+                  backgroundColor: '#757575',
+                  color: '#fff',
+                  border: 'none',
+                }}
                 className={classes.chipSpacing}
               />
             </AccordionDetails>
@@ -103,21 +122,92 @@ export default function Legend() {
               aria-controls="panel2a-content"
               id="panel2a-header"
             >
-              <Typography className={classes.heading}>
-                Occupational Classes
-              </Typography>
+              <Typography className={classes.heading}>Scenarios</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
+              <Tooltip title={longText} arrow>
+                <Chip
+                  label="FC"
+                  onClick={handleClick}
+                  variant="outlined"
+                  className={classes.chipSpacing}
+                />
+              </Tooltip>
               <Chip
-                label="Occupational Classes 2010"
+                label="NoFC"
                 onClick={handleClick}
                 variant="outlined"
                 className={classes.chipSpacing}
+                style={{
+                  backgroundColor: '#EB4B35',
+                  color: '#fff',
+                  border: 'none',
+                }}
               />
+
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                style={{ marginLeft: '14px', marginTop: '16px' }}
+              >
+                Select the background
+              </Typography>
+
+              <div>
+                <Chip
+                  label="CR"
+                  onClick={handleClick}
+                  variant="outlined"
+                  className={classes.chipSpacing}
+                  style={{
+                    backgroundColor: '#757575',
+                    color: '#fff',
+                    border: 'none',
+                  }}
+                />
+                <Chip
+                  label="SimU"
+                  onClick={handleClick}
+                  variant="outlined"
+                  className={classes.chipSpacing}
+                />
+                <Chip
+                  label="LU"
+                  onClick={handleClick}
+                  variant="outlined"
+                  className={classes.chipSpacing}
+                />
+              </div>
+
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                style={{ marginLeft: '14px', marginTop: '16px' }}
+              >
+                Select an Attribute
+              </Typography>
+
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-label">Attribute</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={age}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={10}>Soybean</MenuItem>
+                  <MenuItem value={20}>Cropland</MenuItem>
+                  <MenuItem value={30}>Grassland</MenuItem>
+                  <MenuItem value={30}>Native Vegetation</MenuItem>
+                  <MenuItem value={30}>Native Vegetation Conversion</MenuItem>
+                </Select>
+              </FormControl>
             </AccordionDetails>
           </Accordion>
 
-          <Accordion className={classes.customAccordion}>
+          {/* <Accordion className={classes.customAccordion}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel3a-content"
@@ -141,7 +231,7 @@ export default function Legend() {
                 className={classes.chipSpacing}
               />
             </AccordionDetails>
-          </Accordion>
+          </Accordion> */}
         </div>
       </CardContent>
     </Card>

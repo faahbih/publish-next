@@ -50,7 +50,7 @@ const userDefinedProperties = {
         fillOpacity: defaultProperties.color.value.default.fillOpacity,
         fillColor: '#ffe7ff',
       },
-      'Amazon Rainforest': {
+      Amazonia: {
         color: defaultProperties.color.value.default.color,
         weight: defaultProperties.color.value.default.weight,
         fillOpacity: defaultProperties.color.value.default.fillOpacity,
