@@ -7,6 +7,7 @@ import Report from 'components/Report';
 import { Layer } from 'leaflet';
 import Legend from 'components/Legend';
 import { MapProperties } from 'containers/Types';
+import Temporal from 'components/Temporal';
 
 const defaultProperties = {
   lat: -14.35143,
@@ -135,6 +136,7 @@ export default function Leaflet() {
         properties={featureSelected?.properties}
         onClose={handleDialogClose}
       />
+      <Temporal></Temporal>
     </div>
   );
 }
