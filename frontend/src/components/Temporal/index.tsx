@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       position: 'fixed',
-      zIndex: 3000,
+      zIndex: 1299,
       display: 'flex',
       bottom: '16px',
       justifyContent: 'center',
