@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Map, TileLayer, ZoomControl, GeoJSON } from 'react-leaflet';
-import rawData from 'assets/brazil-forest-code.json';
 
 import Report from 'components/Report';
 import { Layer } from 'leaflet';
 import Legend from 'components/Legend';
 import { MapProperties } from 'containers/Types';
 import Temporal from 'components/Temporal';
+import { FeatureService } from './feature.service';
 
 const defaultProperties = {
   lat: -14.35143,
@@ -73,7 +73,7 @@ const userDefinedProperties = {
   },
 } as MapProperties;
 
-const spatialData = rawData as GeoJSON.GeoJsonObject;
+const featureService = FeatureService.getInstance();
 
 function geoJSONStyle(feature?: GeoJSON.Feature) {
   let style = defaultProperties.color.value.default;
@@ -99,6 +99,7 @@ export default function Leaflet() {
     featureSelected,
     setFeatureSelected,
   ] = React.useState<GeoJSON.Feature | null>(null);
+  const [biomesData, setBiomesData] = React.useState<GeoJSON.GeoJsonObject>();
 
   const onEachFeature = (feature: GeoJSON.Feature, layer: Layer) => {
     layer.on('click', () => {
@@ -110,6 +111,26 @@ export default function Leaflet() {
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
+
+  const loadGeoJSON = (): JSX.Element | null => {
+    if (!biomesData) {
+      return null;
+    }
+
+    return (
+      <GeoJSON
+        data={biomesData!}
+        style={geoJSONStyle}
+        onEachFeature={onEachFeature}
+      />
+    );
+  };
+
+  React.useEffect(() => {
+    featureService.getBiomes().then((biomes: GeoJSON.GeoJsonObject) => {
+      setBiomesData(biomes);
+    });
+  }, []);
 
   return (
     <div>
@@ -124,11 +145,8 @@ export default function Leaflet() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <ZoomControl position="bottomright" />
-        <GeoJSON
-          data={spatialData}
-          style={geoJSONStyle}
-          onEachFeature={onEachFeature}
-        />
+
+        {loadGeoJSON()}
       </Map>
       <Legend mapProperties={userDefinedProperties} />
       <Report
