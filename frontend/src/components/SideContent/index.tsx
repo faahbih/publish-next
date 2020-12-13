@@ -11,35 +11,33 @@ import {
   Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import './style.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       maxWidth: 275,
       position: 'absolute',
-      zIndex: 1199,
+      zIndex: 1200,
       left: 56,
       height: '100%',
     },
     cardContent: {
       padding: '86px 16px',
     },
-    title: {
-      fontSize: 12,
-    },
     main: {
       width: '100%',
     },
-    customAccordion: {
-      boxShadow: 'none',
-      margin: '4px 0',
-    },
+    // customAccordion: {
+    //   boxShadow: 'none',
+    //   margin: '4px 0',
+    // },
     customAccordionSummary: {
       padding: '0px 8px',
     },
     customAccordionDetails: {
       flexWrap: 'wrap',
-      padding: 0,
+      padding: 8,
     },
     heading: {
       fontSize: theme.typography.pxToRem(16),
@@ -63,16 +61,16 @@ rigorously enforced Brazil's Forest Code
 
 const textNoFC = `Allow both legal and illegal deforestation at all times, which is
 driven by the demand for agricultural commodities, and does not include
-any policy restrictions.`;
+any policy restrictions`;
 
 const textCrop = `Planted areas with the following crops:
 barley, dry beans, cassava, corn, cotton, groundnut, palm oil, potato,
-rice, sorghum, soybeans, sugarcane, sweet potato, wheat.`;
+rice, sorghum, soybeans, sugarcane, sweet potato, wheat`;
 
 const textGrass = `Pasture areas used for livestock ranching.`;
 const textNatV = `Native vegetation including rainforest and savannas.`;
 const textNatVC = `Native vegetation loss due to pasture and
-cropland expansions.`;
+cropland expansions`;
 const textLU = `Large Unit (200x200Km at Equator)`;
 
 export default function Legend() {
@@ -84,16 +82,16 @@ export default function Legend() {
   return (
     <Card className={classes.root}>
       <CardContent className={classes.cardContent}>
-        <Typography
+        {/* <Typography
           className={classes.title}
           color="textSecondary"
           gutterBottom
         >
           Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        </Typography>
+        </Typography> */}
 
         <div className={classes.main}>
-          <Accordion className={classes.customAccordion}>
+          <Accordion>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}
@@ -127,7 +125,7 @@ export default function Legend() {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion className={classes.customAccordion}>
+          <Accordion>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}
@@ -189,7 +187,7 @@ export default function Legend() {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion className={classes.customAccordion}>
+          <Accordion>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}
@@ -219,7 +217,7 @@ export default function Legend() {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion className={classes.customAccordion}>
+          <Accordion>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}

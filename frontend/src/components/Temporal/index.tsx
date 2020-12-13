@@ -6,7 +6,13 @@ import {
   createStyles,
 } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
-import { Card, IconButton, Typography } from '@material-ui/core';
+import {
+  Card,
+  FormControlLabel,
+  IconButton,
+  Switch,
+  Typography,
+} from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -14,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       position: 'fixed',
-      zIndex: 1299,
+      zIndex: 1199,
       display: 'flex',
       bottom: '16px',
       justifyContent: 'center',
@@ -28,7 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 500 + theme.spacing(3) * 2,
       display: 'block',
       background: '#fff',
-      padding: '16px 24px 8px',
+      padding: '8px 26px 0',
+    },
+    switch: {
+      marginLeft: 0,
     },
     content: {
       display: 'flex',
@@ -120,11 +129,34 @@ const TemporalSlider = withStyles({
 
 export default function Temporal() {
   const classes = useStyles();
+  const [state, setState] = React.useState({
+    checkedA: true,
+    checkedB: true,
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
 
   return (
     <div className={classes.root}>
       <Card className={classes.slider}>
         <Typography gutterBottom></Typography>
+
+        <FormControlLabel
+          className={classes.switch}
+          control={
+            <Switch
+              size="small"
+              checked={state.checkedA}
+              onChange={handleChange}
+              name="checkedA"
+              color="primary"
+            />
+          }
+          label="Algum texto aqui"
+        />
+
         <div className={classes.content}>
           <IconButton aria-label="play" className={classes.icon}>
             <PlayArrowIcon />
