@@ -5,9 +5,10 @@ import { Map, TileLayer, ZoomControl, GeoJSON } from 'react-leaflet';
 import Report from 'components/Report';
 import { Layer } from 'leaflet';
 import Legend from 'components/Legend';
-import { MapProperties } from 'containers/Types';
+import { MapProperties, View } from 'containers/Types';
 import Temporal from 'components/Temporal';
 import { FeatureService } from './feature.service';
+import { AppContext } from 'contexts/AppContext';
 
 const defaultProperties = {
   lat: -14.35143,
@@ -73,8 +74,6 @@ const userDefinedProperties = {
   },
 } as MapProperties;
 
-const featureService = FeatureService.getInstance();
-
 function geoJSONStyle(feature?: GeoJSON.Feature) {
   let style = defaultProperties.color.value.default;
 
@@ -95,16 +94,31 @@ function geoJSONStyle(feature?: GeoJSON.Feature) {
 
 export default function Leaflet() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const appState = React.useContext(AppContext);
+
   const [
     featureSelected,
     setFeatureSelected,
   ] = React.useState<GeoJSON.Feature | null>(null);
-  const [biomesData, setBiomesData] = React.useState<GeoJSON.GeoJsonObject>();
+
+  const [biomesData, setBiomesData] = React.useState<View>();
+  // const [biomesLabelsData, setBiomesLabelsData] = React.useState<View>();
+  // const [brazilData, setBrazilData] = React.useState<View>();
+  // const [brazilLabelsData, setBrazilLabelsData] = React.useState<View>();
+  // const views = [
+  //   biomesData,
+  //   biomesLabelsData,
+  //   brazilData,
+  //   brazilLabelsData,
+  // ];
+
+  const views = [biomesData];
 
   const onEachFeature = (feature: GeoJSON.Feature, layer: Layer) => {
     layer.on('click', () => {
       setDialogOpen(true);
       setFeatureSelected(feature);
+      console.log(appState);
     });
   };
 
@@ -112,23 +126,25 @@ export default function Leaflet() {
     setDialogOpen(false);
   };
 
-  const loadGeoJSON = (): JSX.Element | null => {
-    if (!biomesData) {
-      return null;
-    }
-
-    return (
-      <GeoJSON
-        data={biomesData!}
-        style={geoJSONStyle}
-        onEachFeature={onEachFeature}
-      />
-    );
+  const loadGeoJSON = (): (JSX.Element | undefined)[] => {
+    return views
+      .filter((view?: View) => view && view.visible)
+      .map((view?: View) => {
+        return (
+          <GeoJSON
+            key={view!.name}
+            data={view!.data}
+            style={geoJSONStyle}
+            onEachFeature={onEachFeature}
+          />
+        );
+      });
   };
 
   React.useEffect(() => {
-    featureService.getBiomes().then((biomes: GeoJSON.GeoJsonObject) => {
-      setBiomesData(biomes);
+    const featureService = FeatureService.getInstance();
+    featureService.getBiomes().then((view: View) => {
+      setBiomesData(view);
     });
   }, []);
 
@@ -144,6 +160,7 @@ export default function Leaflet() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
+
         <ZoomControl position="bottomright" />
 
         {loadGeoJSON()}

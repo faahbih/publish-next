@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { AppContext } from 'contexts/AppContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,10 +76,17 @@ const textNatVC = `Native vegetation loss due to pasture and
 cropland expansions.`;
 const textLU = `Large Unit (200x200Km at Equator)`;
 
-export default function Legend() {
+export default function SideContent() {
   const classes = useStyles();
-  const handleClick = () => {
-    console.info('You clicked the Chip.');
+  const appProps = React.useContext(AppContext);
+
+  const handleClick = (event: any) => {
+    console.info('You clicked the Chip.', event);
+  };
+
+  const handleBorderClick = (viewName: string) => {
+    console.log(viewName, 'change color');
+    console.log(appProps);
   };
 
   return (
@@ -201,13 +209,13 @@ export default function Legend() {
             <AccordionDetails className={classes.customAccordionDetails}>
               <Chip
                 label="Brazil"
-                onClick={handleClick}
+                onClick={() => handleBorderClick('Brazil')}
                 variant="outlined"
                 className={classes.chipSpacing}
               />
               <Chip
                 label="Biomes"
-                onClick={handleClick}
+                onClick={() => handleBorderClick('Biomes')}
                 variant="outlined"
                 className={classes.chipSpacing}
                 style={{
