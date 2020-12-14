@@ -20,3 +20,9 @@ export type LegendValue = {
   fillColor: string;
   label: string;
 };
+
+export type View = {
+  name: string;
+  visible: boolean;
+  data: GeoJSON.GeoJsonObject;
+};
