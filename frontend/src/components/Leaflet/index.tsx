@@ -103,7 +103,7 @@ export default function Leaflet() {
 
   const [biomesData, setBiomesData] = React.useState<View>();
   // const [biomesLabelsData, setBiomesLabelsData] = React.useState<View>();
-  // const [brazilData, setBrazilData] = React.useState<View>();
+  const [brazilData, setBrazilData] = React.useState<View>();
   // const [brazilLabelsData, setBrazilLabelsData] = React.useState<View>();
   // const views = [
   //   biomesData,
@@ -112,7 +112,7 @@ export default function Leaflet() {
   //   brazilLabelsData,
   // ];
 
-  const views = [biomesData];
+  const views = [biomesData, brazilData];
 
   const onEachFeature = (feature: GeoJSON.Feature, layer: Layer) => {
     layer.on('click', () => {
@@ -145,6 +145,14 @@ export default function Leaflet() {
     const featureService = FeatureService.getInstance();
     featureService.getBiomes().then((view: View) => {
       setBiomesData(view);
+      appState.props.border.views.push(view);
+      appState.setProps({ ...appState.props });
+    });
+
+    featureService.getBrazil().then((view: View) => {
+      setBrazilData(view);
+      appState.props.border.views.push(view);
+      appState.setProps({ ...appState.props });
     });
   }, []);
 

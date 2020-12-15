@@ -26,3 +26,19 @@ export type View = {
   visible: boolean;
   data: GeoJSON.GeoJsonObject;
 };
+
+export type Scenario = {
+  views: View[];
+};
+
+export type Attribute = {
+  views: View[];
+};
+
+export type Border = {
+  views: View[];
+};
+
+export type Background = {
+  views: View[];
+};

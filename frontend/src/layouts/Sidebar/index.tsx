@@ -114,7 +114,9 @@ export default function Sidebar() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [resumeOpen, setResumeOpen] = React.useState(false);
+  const [resumeOpen, setResumeOpen] = React.useState(
+    process.env.NODE_ENV === 'production',
+  );
 
   const handleDrawerOpen = () => {
     setOpen(true);

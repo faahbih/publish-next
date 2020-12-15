@@ -13,6 +13,10 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { AppContext } from 'contexts/AppContext';
 import './style.scss';
+// import SideChip from './SideChip';
+import SideChipList from './SideChipList';
+import { SideChipProps } from './SideChip';
+import { View } from 'containers/Types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,37 +80,39 @@ const textLU = `Large Unit (200x200Km at Equator)`;
 
 export default function SideContent() {
   const classes = useStyles();
-  const appProps = React.useContext(AppContext);
+  const appState = React.useContext(AppContext);
 
-  const handleClick = (event: any) => {
-    console.info('You clicked the Chip.', event);
+  const getChips = () => {
+    return appState.props.border.views.map((view: View) => {
+      return {
+        label: view.name,
+        active: view.visible,
+        className: classes.chipSpacing,
+        backgroundColorOnActive: '#757575',
+      };
+    });
   };
 
-  const handleBorderClick = (viewName: string) => {
-    console.log(viewName, 'change color');
-    console.log(appProps);
+  const handleClick = (event: any) => {
+    console.info('You clicked the Chip.', event, appState);
+  };
+
+  const handleViewsChange = (newChips: SideChipProps[]) => {
+    console.info('Change Layer', newChips, appState);
   };
 
   return (
     <Card className={classes.root}>
       <CardContent className={classes.cardContent}>
-        {/* <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        </Typography> */}
-
         <div className={classes.main}>
-          <Accordion>
+          <Accordion defaultExpanded={true}>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography className={classes.heading}>Scenarios</Typography>
+              <Typography className={classes.heading}>Scenario</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
               <Tooltip title={textFC} arrow>
@@ -133,14 +139,14 @@ export default function SideContent() {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion>
+          <Accordion defaultExpanded={true}>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel2a-content"
               id="panel2a-header"
             >
-              <Typography className={classes.heading}>Attributes</Typography>
+              <Typography className={classes.heading}>Attribute</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
               <Tooltip title={textFC} arrow>
@@ -195,37 +201,21 @@ export default function SideContent() {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion>
+          <Accordion defaultExpanded={true}>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel3a-content"
               id="panel3a-header"
             >
-              <Typography className={classes.heading}>Borders</Typography>
+              <Typography className={classes.heading}>Border</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
-              <Chip
-                label="Brazil"
-                onClick={() => handleBorderClick('Brazil')}
-                variant="outlined"
-                className={classes.chipSpacing}
-              />
-              <Chip
-                label="Biomes"
-                onClick={() => handleBorderClick('Biomes')}
-                variant="outlined"
-                className={classes.chipSpacing}
-                style={{
-                  backgroundColor: '#757575',
-                  color: '#fff',
-                  border: 'none',
-                }}
-              />
+              <SideChipList chips={getChips()} onChange={handleViewsChange} />
             </AccordionDetails>
           </Accordion>
 
-          <Accordion>
+          <Accordion defaultExpanded={true}>
             <AccordionSummary
               className={classes.customAccordionSummary}
               expandIcon={<ExpandMoreIcon />}
