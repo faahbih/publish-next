@@ -8,7 +8,7 @@ import Legend from 'components/Legend';
 import { MapProperties, View } from 'containers/Types';
 import Temporal from 'components/Temporal';
 import { FeatureService } from './feature.service';
-import { AppContext } from 'contexts/AppContext';
+import { useDispatch, useTrackedState } from 'store';
 
 const defaultProperties = {
   lat: -14.35143,
@@ -93,32 +93,20 @@ function geoJSONStyle(feature?: GeoJSON.Feature) {
 }
 
 export default function Leaflet() {
+  const dispatch = useDispatch();
+  const state = useTrackedState();
+
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const appState = React.useContext(AppContext);
 
   const [
     featureSelected,
     setFeatureSelected,
   ] = React.useState<GeoJSON.Feature | null>(null);
 
-  const [biomesData, setBiomesData] = React.useState<View>();
-  // const [biomesLabelsData, setBiomesLabelsData] = React.useState<View>();
-  const [brazilData, setBrazilData] = React.useState<View>();
-  // const [brazilLabelsData, setBrazilLabelsData] = React.useState<View>();
-  // const views = [
-  //   biomesData,
-  //   biomesLabelsData,
-  //   brazilData,
-  //   brazilLabelsData,
-  // ];
-
-  const views = [biomesData, brazilData];
-
   const onEachFeature = (feature: GeoJSON.Feature, layer: Layer) => {
     layer.on('click', () => {
       setDialogOpen(true);
       setFeatureSelected(feature);
-      console.log(appState);
     });
   };
 
@@ -126,7 +114,7 @@ export default function Leaflet() {
     setDialogOpen(false);
   };
 
-  const loadGeoJSON = (): (JSX.Element | undefined)[] => {
+  const loadGeoJSON = (views: View[]): (JSX.Element | undefined)[] => {
     return views
       .filter((view?: View) => view && view.visible)
       .map((view?: View) => {
@@ -143,18 +131,15 @@ export default function Leaflet() {
 
   React.useEffect(() => {
     const featureService = FeatureService.getInstance();
+
     featureService.getBiomes().then((view: View) => {
-      setBiomesData(view);
-      appState.props.border.views.push(view);
-      appState.setProps({ ...appState.props });
+      dispatch({ type: 'ADD_BORDER', view });
     });
 
     featureService.getBrazil().then((view: View) => {
-      setBrazilData(view);
-      appState.props.border.views.push(view);
-      appState.setProps({ ...appState.props });
+      dispatch({ type: 'ADD_BORDER', view });
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
@@ -171,7 +156,7 @@ export default function Leaflet() {
 
         <ZoomControl position="bottomright" />
 
-        {loadGeoJSON()}
+        {loadGeoJSON(state.border)}
       </Map>
       <Legend mapProperties={userDefinedProperties} />
       <Report

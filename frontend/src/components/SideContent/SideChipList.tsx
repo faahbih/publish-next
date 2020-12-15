@@ -1,29 +1,37 @@
 import React from 'react';
+
+import { useDispatch, useTrackedState } from 'store';
 import SideChip, { SideChipProps } from './SideChip';
+import { View } from 'containers/Types';
 
 type SideChipListProps = {
-  chips: SideChipProps[];
+  className: string;
+  backgroundColorOnActive: string;
   onChange: (chips: SideChipProps[]) => void;
 };
 
 export default function SideChipList(props: SideChipListProps) {
-  const [chips, setChips] = React.useState<SideChipProps[]>(props.chips);
+  const dispatch = useDispatch();
+  const state = useTrackedState();
+
+  const getChips = () => {
+    return state.border.map((view: View) => {
+      return {
+        label: view.name,
+        active: view.visible,
+        className: props.className,
+        backgroundColorOnActive: props.backgroundColorOnActive,
+      };
+    });
+  };
 
   const handleClick = (data: SideChipProps) => {
-    const newChips = chips.map((chip: SideChipProps) => {
-      const isActive = chip.label === data.label && data.active;
-      return { ...chip, active: isActive };
-    });
-
-    if (newChips.find((chip: SideChipProps) => chip.active)) {
-      setChips(newChips);
-      props.onChange(newChips);
-    }
+    dispatch({ type: 'TOGGLE_BORDER', name: data.label, visible: data.active });
   };
 
   return (
     <div>
-      {chips.map((chip: SideChipProps) => (
+      {getChips().map((chip: SideChipProps) => (
         <SideChip
           key={chip.label}
           label={chip.label}

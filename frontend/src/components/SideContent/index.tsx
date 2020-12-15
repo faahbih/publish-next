@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,12 +12,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { AppContext } from 'contexts/AppContext';
 import './style.scss';
-// import SideChip from './SideChip';
 import SideChipList from './SideChipList';
 import { SideChipProps } from './SideChip';
-import { View } from 'containers/Types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,10 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
     main: {
       width: '100%',
     },
-    // customAccordion: {
-    //   boxShadow: 'none',
-    //   margin: '4px 0',
-    // },
     customAccordionSummary: {
       padding: '0px 8px',
     },
@@ -80,25 +74,13 @@ const textLU = `Large Unit (200x200Km at Equator)`;
 
 export default function SideContent() {
   const classes = useStyles();
-  const appState = React.useContext(AppContext);
-
-  const getChips = () => {
-    return appState.props.border.views.map((view: View) => {
-      return {
-        label: view.name,
-        active: view.visible,
-        className: classes.chipSpacing,
-        backgroundColorOnActive: '#757575',
-      };
-    });
-  };
 
   const handleClick = (event: any) => {
-    console.info('You clicked the Chip.', event, appState);
+    console.info('You clicked the Chip.', event);
   };
 
   const handleViewsChange = (newChips: SideChipProps[]) => {
-    console.info('Change Layer', newChips, appState);
+    console.info('Change Layer', newChips);
   };
 
   return (
@@ -211,7 +193,11 @@ export default function SideContent() {
               <Typography className={classes.heading}>Border</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
-              <SideChipList chips={getChips()} onChange={handleViewsChange} />
+              <SideChipList
+                className={classes.chipSpacing}
+                backgroundColorOnActive={'#757575'}
+                onChange={handleViewsChange}
+              />
             </AccordionDetails>
           </Accordion>
 
