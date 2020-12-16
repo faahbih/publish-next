@@ -14,7 +14,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './style.scss';
 import SideChipList from './SideChipList';
-import { SideChipProps } from './SideChip';
+import { ViewType } from 'containers/Types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,23 +53,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const textFC = `
-Attempt to capture the future impacts of all key provisions of a
-rigorously enforced Brazil's Forest Code
-`;
-
-const textNoFC = `Allow both legal and illegal deforestation at all times, which is
-driven by the demand for agricultural commodities, and does not include
-any policy restrictions`;
-
-const textCrop = `Planted areas with the following crops:
-barley, dry beans, cassava, corn, cotton, groundnut, palm oil, potato,
-rice, sorghum, soybeans, sugarcane, sweet potato, wheat`;
-
-const textGrass = `Pasture areas used for livestock ranching.`;
-const textNatV = `Native vegetation including rainforest and savannas.`;
-const textNatVC = `Native vegetation loss due to pasture and
-cropland expansions`;
 const textLU = `Large Unit (200x200Km at Equator)`;
 
 export default function SideContent() {
@@ -77,10 +60,6 @@ export default function SideContent() {
 
   const handleClick = (event: any) => {
     console.info('You clicked the Chip.', event);
-  };
-
-  const handleViewsChange = (newChips: SideChipProps[]) => {
-    console.info('Change Layer', newChips);
   };
 
   return (
@@ -97,27 +76,11 @@ export default function SideContent() {
               <Typography className={classes.heading}>Scenario</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
-              <Tooltip title={textFC} arrow>
-                <Chip
-                  label="FC"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
-              <Tooltip title={textNoFC} arrow>
-                <Chip
-                  label="NoFC"
-                  onClick={handleClick}
-                  variant="outlined"
-                  style={{
-                    backgroundColor: '#EB4B35',
-                    color: '#fff',
-                    border: 'none',
-                  }}
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
+              <SideChipList
+                viewType={ViewType.SCENARIO}
+                className={classes.chipSpacing}
+                backgroundColorOnActive={{ FC: '#008000', NoFC: '#EB4B35' }}
+              />
             </AccordionDetails>
           </Accordion>
 
@@ -131,55 +94,11 @@ export default function SideContent() {
               <Typography className={classes.heading}>Attribute</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
-              <Tooltip title={textFC} arrow>
-                <Chip
-                  label="Soybean"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
-
-              <Tooltip title={textCrop} arrow>
-                <Chip
-                  label="Cropland"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                  style={{
-                    backgroundColor: '#757575',
-                    color: '#fff',
-                    border: 'none',
-                  }}
-                />
-              </Tooltip>
-
-              <Tooltip title={textGrass} arrow>
-                <Chip
-                  label="Grassland"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
-
-              <Tooltip title={textNatV} arrow>
-                <Chip
-                  label="Native Vegetation"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
-
-              <Tooltip title={textNatVC} arrow>
-                <Chip
-                  label="Native Vegetation Conversion"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
+              <SideChipList
+                viewType={ViewType.ATTRIBUTE}
+                className={classes.chipSpacing}
+                backgroundColorOnActive={'#757575'}
+              />
             </AccordionDetails>
           </Accordion>
 
@@ -194,9 +113,9 @@ export default function SideContent() {
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
               <SideChipList
+                viewType={ViewType.BORDER}
                 className={classes.chipSpacing}
                 backgroundColorOnActive={'#757575'}
-                onChange={handleViewsChange}
               />
             </AccordionDetails>
           </Accordion>

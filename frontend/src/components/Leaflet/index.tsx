@@ -1,14 +1,23 @@
 import React from 'react';
 
-import { Map, TileLayer, ZoomControl, GeoJSON } from 'react-leaflet';
+import {
+  Map,
+  TileLayer,
+  ZoomControl,
+  GeoJSON,
+  Marker,
+  Tooltip,
+} from 'react-leaflet';
 
 import Report from 'components/Report';
 import { Layer } from 'leaflet';
 import Legend from 'components/Legend';
-import { MapProperties, View } from 'containers/Types';
+import { MapProperties, View, ViewType } from 'containers/Types';
 import Temporal from 'components/Temporal';
 import { FeatureService } from './feature.service';
 import { useDispatch, useTrackedState } from 'store';
+import { filter } from 'store/utils';
+import { iconPositive, iconNegative, iconEquals } from './icons';
 
 const defaultProperties = {
   lat: -14.35143,
@@ -95,7 +104,6 @@ function geoJSONStyle(feature?: GeoJSON.Feature) {
 export default function Leaflet() {
   const dispatch = useDispatch();
   const state = useTrackedState();
-
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const [
@@ -114,14 +122,14 @@ export default function Leaflet() {
     setDialogOpen(false);
   };
 
-  const loadGeoJSON = (views: View[]): (JSX.Element | undefined)[] => {
+  const loadGeoJSON = (views: View[]): JSX.Element[] => {
     return views
-      .filter((view?: View) => view && view.visible)
+      .filter((view?: View) => view && view.data && view.visible)
       .map((view?: View) => {
         return (
           <GeoJSON
             key={view!.name}
-            data={view!.data}
+            data={view!.data!}
             style={geoJSONStyle}
             onEachFeature={onEachFeature}
           />
@@ -129,15 +137,99 @@ export default function Leaflet() {
       });
   };
 
+  const loadAttributes = (views: View[]): JSX.Element[] => {
+    const layers: JSX.Element[] = [];
+
+    views.forEach((view) => {
+      if (view && view.data && view.visible) {
+        const geojson = { ...view.data } as any;
+        for (const feature of geojson.features) {
+          const properties = feature.properties;
+
+          const geometry = feature.geometry;
+          const lat = geometry.coordinates[1];
+          const lng = geometry.coordinates[0];
+          const coords: any = [lat, lng];
+
+          if (
+            state.currentScenario &&
+            state.currentAttribute &&
+            state.currentYear
+          ) {
+            const attributesMapper: any = {
+              Soybean: 'Soy',
+              Cropland: 'Crp',
+              Grassland: 'Grs',
+              'Native Vegetation': 'Nati',
+              'Native Vegetation Conversion': 'CNat',
+            };
+
+            if (attributesMapper.hasOwnProperty(state.currentAttribute)) {
+              const scenario = state.currentScenario[0];
+              const attribute = attributesMapper[state.currentAttribute];
+
+              const fieldName = `${scenario}${attribute}${state.currentYear}`;
+              const fieldValue = properties[fieldName];
+              // const fieldDiff = properties[`D${fieldName}`];
+              const fieldResult = properties[`R${fieldName}`];
+
+              const fieldValueFormatted = fieldValue
+                .toFixed(2)
+                .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+              const tooltipValue = fieldValueFormatted;
+              // TODO validar check box para usar dado da diferenca
+
+              let iconSelected = iconEquals;
+              if (fieldResult === 'positive') {
+                iconSelected = iconPositive;
+              } else if (fieldResult === 'negative') {
+                iconSelected = iconNegative;
+              }
+
+              layers.push(
+                <Marker
+                  key={new Date().getTime() + Math.random()}
+                  position={coords}
+                  icon={iconSelected}
+                >
+                  <Tooltip
+                    className={'marker-class-name'}
+                    direction={'bottom'}
+                    offset={[0, 20]}
+                    opacity={0.9}
+                    permanent
+                  >
+                    {`${tooltipValue}`}
+                  </Tooltip>
+                </Marker>,
+              );
+            }
+          }
+        }
+      }
+    });
+
+    return layers;
+  };
+
   React.useEffect(() => {
     const featureService = FeatureService.getInstance();
 
     featureService.getBiomes().then((view: View) => {
-      dispatch({ type: 'ADD_BORDER', view });
+      dispatch({ type: 'ADD_VIEW', view });
     });
 
     featureService.getBrazil().then((view: View) => {
-      dispatch({ type: 'ADD_BORDER', view });
+      dispatch({ type: 'ADD_VIEW', view });
+    });
+
+    featureService.getBiomesLabels().then((views: View[]) => {
+      views.forEach((view: View) => dispatch({ type: 'ADD_VIEW', view }));
+    });
+
+    featureService.getScenarios().then((views: View[]) => {
+      views.forEach((view: View) => dispatch({ type: 'ADD_VIEW', view }));
     });
   }, [dispatch]);
 
@@ -156,7 +248,8 @@ export default function Leaflet() {
 
         <ZoomControl position="bottomright" />
 
-        {loadGeoJSON(state.border)}
+        {loadGeoJSON(filter(state, ViewType.BORDER))}
+        {loadAttributes(filter(state, ViewType.ATTRIBUTE))}
       </Map>
       <Legend mapProperties={userDefinedProperties} />
       <Report

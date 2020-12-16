@@ -2,31 +2,50 @@ import React from 'react';
 
 import { useDispatch, useTrackedState } from 'store';
 import SideChip, { SideChipProps } from './SideChip';
-import { View } from 'containers/Types';
+import { View, ViewType } from 'containers/Types';
+import { filter } from 'store/utils';
 
 type SideChipListProps = {
+  viewType: ViewType;
   className: string;
-  backgroundColorOnActive: string;
-  onChange: (chips: SideChipProps[]) => void;
+  backgroundColorOnActive: string | { [name: string]: string };
 };
 
 export default function SideChipList(props: SideChipListProps) {
   const dispatch = useDispatch();
   const state = useTrackedState();
 
-  const getChips = () => {
-    return state.border.map((view: View) => {
+  const getBackgroundColor = (name: string) => {
+    let backgroundColorOnActive = '';
+
+    if (typeof props.backgroundColorOnActive === 'string') {
+      backgroundColorOnActive = props.backgroundColorOnActive;
+    } else if (props.backgroundColorOnActive.hasOwnProperty(name)) {
+      backgroundColorOnActive = props.backgroundColorOnActive[name];
+    }
+
+    return backgroundColorOnActive;
+  };
+
+  const getChips = (): SideChipProps[] => {
+    return filter(state, props.viewType).map((view: View) => {
       return {
         label: view.name,
         active: view.visible,
+        tooltip: view.description,
         className: props.className,
-        backgroundColorOnActive: props.backgroundColorOnActive,
+        backgroundColorOnActive: getBackgroundColor(view.name),
       };
     });
   };
 
   const handleClick = (data: SideChipProps) => {
-    dispatch({ type: 'TOGGLE_BORDER', name: data.label, visible: data.active });
+    dispatch({
+      type: 'TOGGLE_VIEW',
+      viewType: props.viewType,
+      name: data.label,
+      visible: data.active,
+    });
   };
 
   return (
@@ -36,6 +55,7 @@ export default function SideChipList(props: SideChipListProps) {
           key={chip.label}
           label={chip.label}
           active={chip.active}
+          tooltip={chip.tooltip}
           className={chip.className}
           backgroundColorOnActive={chip.backgroundColorOnActive}
           onClick={handleClick}

@@ -21,24 +21,17 @@ export type LegendValue = {
   label: string;
 };
 
+export enum ViewType {
+  SCENARIO,
+  ATTRIBUTE,
+  BORDER,
+  BACKGROUND,
+}
+
 export type View = {
   name: string;
+  type: ViewType;
   visible: boolean;
-  data: GeoJSON.GeoJsonObject;
-};
-
-export type Scenario = {
-  views: View[];
-};
-
-export type Attribute = {
-  views: View[];
-};
-
-export type Border = {
-  views: View[];
-};
-
-export type Background = {
-  views: View[];
+  description: string;
+  data?: GeoJSON.GeoJsonObject;
 };

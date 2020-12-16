@@ -1,9 +1,10 @@
 import React from 'react';
-import { Chip } from '@material-ui/core';
+import { Chip, Tooltip } from '@material-ui/core';
 
 export type SideChipProps = {
   label: string;
   active: boolean;
+  tooltip: string;
   className: string;
   backgroundColorOnActive: string;
   onClick?: (props: SideChipProps) => void;
@@ -36,14 +37,16 @@ export default function SideChip(props: SideChipProps) {
   };
 
   return (
-    <Chip
-      label={props.label}
-      onClick={internalHandleClick}
-      variant="outlined"
-      style={{
-        ...getStyle(),
-      }}
-      className={props.className}
-    />
+    <Tooltip title={props.tooltip} arrow>
+      <Chip
+        label={props.label}
+        onClick={internalHandleClick}
+        variant="outlined"
+        style={{
+          ...getStyle(),
+        }}
+        className={props.className}
+      />
+    </Tooltip>
   );
 }

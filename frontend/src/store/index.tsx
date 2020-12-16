@@ -1,42 +1,76 @@
-import { View } from 'containers/Types';
+import { View, ViewType } from 'containers/Types';
 import { useReducer } from 'react';
 import { createContainer } from 'react-tracked';
 
-type State = {
-  border: View[];
+// { [name: string]: any; } | null
+export type State = {
+  currentScenario: string;
+  currentAttribute: string;
+  currentYear: number;
+  views: View[];
 };
 
 type Action =
-  | { type: 'ADD_BORDER'; view: View }
-  | { type: 'TOGGLE_BORDER'; name: string; visible: boolean };
+  | { type: 'ADD_VIEW'; view: View }
+  | { type: 'TOGGLE_VIEW'; viewType: ViewType; name: string; visible: boolean };
 
 const initialState: State = {
-  border: [],
+  currentScenario: '',
+  currentAttribute: '',
+  currentYear: 2000,
+  views: [],
 };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'ADD_BORDER':
-      return {
+    case 'ADD_VIEW':
+      const newStateAddView = {
         ...state,
-        border: [...state.border, action.view],
+        views: [...state.views, action.view],
       };
-    case 'TOGGLE_BORDER':
-      const resetBorder = state.border.map((view) => {
-        return { ...view, visible: false };
+
+      if (action.view.visible) {
+        if (action.view.type === ViewType.SCENARIO) {
+          newStateAddView.currentScenario = action.view.name;
+        }
+
+        if (action.view.type === ViewType.ATTRIBUTE) {
+          newStateAddView.currentAttribute = action.view.name;
+        }
+      }
+
+      return newStateAddView;
+    case 'TOGGLE_VIEW':
+      const resetViews = state.views.map((view) => {
+        if (view.type === action.viewType) {
+          return { ...view, visible: false };
+        }
+
+        return { ...view };
       });
 
-      const newBorder = resetBorder.map((view) => {
-        if (view.name === action.name) {
+      const newViews = resetViews.map((view) => {
+        if (view.type === action.viewType && view.name === action.name) {
           return { ...view, visible: action.visible };
         }
 
-        return view;
+        return { ...view };
       });
 
       const newState = { ...state };
-      if (newBorder.find((view) => view.visible)) {
-        newState.border = newBorder;
+      const viewActive = newViews.find(
+        (view) => view.type === action.viewType && view.visible,
+      );
+      if (viewActive) {
+        if (viewActive.type === ViewType.SCENARIO) {
+          newState.currentScenario = viewActive.name;
+        }
+
+        if (viewActive.type === ViewType.ATTRIBUTE) {
+          newState.currentAttribute = viewActive.name;
+        }
+
+        newState.views = newViews;
       }
 
       return newState;
