@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       position: 'fixed',
-      zIndex: 1199,
+      zIndex: 1198,
       display: 'flex',
       bottom: '16px',
       justifyContent: 'center',
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '100%',
         left: 0,
         bottom: 0,
+        zIndex: 1200,
       },
     },
     slider: {

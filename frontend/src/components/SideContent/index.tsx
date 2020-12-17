@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       maxWidth: 275,
       position: 'absolute',
-      zIndex: 1200,
+      zIndex: 1199,
       left: 56,
       height: '100%',
     },
