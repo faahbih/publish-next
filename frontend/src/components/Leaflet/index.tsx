@@ -233,7 +233,7 @@ export default function Leaflet() {
                     opacity={0.9}
                     permanent
                   >
-                    {`${tooltipValue}`}
+                    {`${tooltipValue} MHa`}
                   </Tooltip>
                 </Marker>,
               );
