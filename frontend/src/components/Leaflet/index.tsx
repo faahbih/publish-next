@@ -23,6 +23,8 @@ import { filter } from 'store/utils';
 import { FeatureService } from './feature.service';
 import { iconEquals, iconNegative, iconPositive } from './icons';
 
+import brazilLabels from 'assets/brazil-forest-code-labels.json';
+
 const defaultProperties = {
   lat: -14.35143,
   lng: -49.01675,
@@ -141,12 +143,36 @@ export default function Leaflet() {
       });
   };
 
+  const loadTileLayer = (views: View[]): JSX.Element[] => {
+    return views
+      .filter((view?: View) => view && view.url && view.visible)
+      .map((view?: View) => {
+        return (
+          <TileLayer
+            url={view!.url!}
+            opacity={1}
+            zIndex={3000}
+            minZoom={3}
+            maxZoom={4}
+            tms={false}
+            attribution='&copy; <a href="https://iopscience.iop.org/article/10.1088/1748-9326/aaccbb" target="_blank" rel="noopener noreferrer">Soterroni et al. (2018)</a>'
+          />
+        );
+      });
+  };
+
   const loadAttributes = (views: View[]): JSX.Element[] => {
     const layers: JSX.Element[] = [];
 
     views.forEach((view) => {
       if (view && view.data && view.visible) {
-        const geojson = { ...view.data } as any;
+        let geojson = { ...view.data } as any;
+
+        // TODO deixar mais generico
+        if (state.currentBorder && state.currentBorder === 'Brazil') {
+          geojson = brazilLabels as GeoJSON.GeoJsonObject;
+        }
+
         for (const feature of geojson.features) {
           const properties = feature.properties;
 
@@ -223,19 +249,19 @@ export default function Leaflet() {
   React.useEffect(() => {
     const featureService = FeatureService.getInstance();
 
-    featureService.getBiomes().then((view: View) => {
-      dispatch({ type: 'ADD_VIEW', view });
-    });
-
-    featureService.getBrazil().then((view: View) => {
-      dispatch({ type: 'ADD_VIEW', view });
-    });
-
-    featureService.getBiomesLabels().then((views: View[]) => {
+    featureService.getAttriburesBiomes().then((views: View[]) => {
       views.forEach((view: View) => dispatch({ type: 'ADD_VIEW', view }));
     });
 
     featureService.getScenarios().then((views: View[]) => {
+      views.forEach((view: View) => dispatch({ type: 'ADD_VIEW', view }));
+    });
+
+    featureService.getBorders().then((views: View[]) => {
+      views.forEach((view: View) => dispatch({ type: 'ADD_VIEW', view }));
+    });
+
+    featureService.getBackgrounds().then((views: View[]) => {
       views.forEach((view: View) => dispatch({ type: 'ADD_VIEW', view }));
     });
   }, [dispatch]);
@@ -257,6 +283,7 @@ export default function Leaflet() {
 
         {loadGeoJSON(filter(state, ViewType.BORDER))}
         {loadAttributes(filter(state, ViewType.ATTRIBUTE))}
+        {loadTileLayer(filter(state, ViewType.BACKGROUND))}
       </Map>
       <Legend mapProperties={userDefinedProperties} />
       <Report

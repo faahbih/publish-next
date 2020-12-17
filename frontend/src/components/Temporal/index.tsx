@@ -201,7 +201,6 @@ export default function Temporal() {
 
       const timelineInterval = setInterval(() => {
         const position = marks[index];
-        console.log(index, position.label);
         handleChangeSlider(sliderEvent, position.value);
 
         index++;

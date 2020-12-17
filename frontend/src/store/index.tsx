@@ -6,6 +6,7 @@ import { createContainer } from 'react-tracked';
 export type State = {
   currentScenario: string;
   currentAttribute: string;
+  currentBorder: string;
   currentYear: number;
   currentTimelineOption: TimelineOption;
   views: View[];
@@ -20,6 +21,7 @@ type Action =
 const initialState: State = {
   currentScenario: '',
   currentAttribute: '',
+  currentBorder: '',
   currentYear: 2000,
   currentTimelineOption: TimelineOption.ABSOLUTE,
   views: [],
@@ -40,6 +42,10 @@ const reducer = (state: State, action: Action): State => {
 
         if (action.view.type === ViewType.ATTRIBUTE) {
           newStateAddView.currentAttribute = action.view.name;
+        }
+
+        if (action.view.type === ViewType.BORDER) {
+          newStateAddView.currentBorder = action.view.name;
         }
       }
 
@@ -72,6 +78,10 @@ const reducer = (state: State, action: Action): State => {
 
         if (viewActive.type === ViewType.ATTRIBUTE) {
           newState.currentAttribute = viewActive.name;
+        }
+
+        if (viewActive.type === ViewType.BORDER) {
+          newState.currentBorder = viewActive.name;
         }
 
         newState.views = newViews;

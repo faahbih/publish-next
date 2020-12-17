@@ -33,6 +33,7 @@ export type View = {
   type: ViewType;
   visible: boolean;
   description: string;
+  url?: string;
   data?: GeoJSON.GeoJsonObject;
 };
 

@@ -1,20 +1,19 @@
-import React from 'react';
+import './style.scss';
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Chip,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import './style.scss';
-import SideChipList from './SideChipList';
 import { ViewType } from 'containers/Types';
+import React from 'react';
+
+import SideChipList from './SideChipList';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,14 +52,8 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const textLU = `Large Unit (200x200Km at Equator)`;
-
 export default function SideContent() {
   const classes = useStyles();
-
-  const handleClick = (event: any) => {
-    console.info('You clicked the Chip.', event);
-  };
 
   return (
     <Card className={classes.root}>
@@ -130,22 +123,11 @@ export default function SideContent() {
               <Typography className={classes.heading}>Background</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.customAccordionDetails}>
-              <Tooltip title="ColRow (50x50km at Equator)" arrow>
-                <Chip
-                  label="CR"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
-              <Tooltip title={textLU} arrow>
-                <Chip
-                  label="LU"
-                  onClick={handleClick}
-                  variant="outlined"
-                  className={classes.chipSpacing}
-                />
-              </Tooltip>
+              <SideChipList
+                viewType={ViewType.BACKGROUND}
+                className={classes.chipSpacing}
+                backgroundColorOnActive={'#757575'}
+              />
             </AccordionDetails>
           </Accordion>
         </div>

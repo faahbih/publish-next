@@ -23,6 +23,17 @@ const attributes: any = {
   'Native Vegetation': 'Native vegetation including rainforest and savannas',
 };
 
+const borders: any = {
+  Biomes: 'Lorem',
+  Brazil: 'Lorem',
+};
+
+const backgrounds: any = {
+  DS: 'Downscaling (1x1Km at Equator)',
+  CR: 'ColRow (50x50km at Equator)',
+  LU: 'Large Unit (200x200Km at Equator)',
+};
+
 export class FeatureService {
   private static instance: FeatureService;
 
@@ -36,19 +47,25 @@ export class FeatureService {
     return FeatureService.instance;
   }
 
-  public getBiomes(): Promise<View> {
+  public getScenarios(): Promise<View[]> {
     return new Promise((resolve: any) => {
-      resolve({
-        name: 'Biomes',
-        type: ViewType.BORDER,
-        description: 'Lorem',
-        visible: true,
-        data: biomes as GeoJSON.GeoJsonObject,
+      let firstVisible = true;
+      const views = Object.keys(scenarios).map((scenario) => {
+        const isViewVisible = firstVisible;
+        firstVisible = false;
+        return {
+          name: scenario,
+          type: ViewType.SCENARIO,
+          description: scenarios[scenario],
+          visible: isViewVisible,
+        };
       });
+
+      resolve(views);
     });
   }
 
-  public getBiomesLabels(): Promise<View[]> {
+  public getAttriburesBiomes(): Promise<View[]> {
     return new Promise((resolve: any) => {
       let firstVisible = true;
       const views = Object.keys(attributes).map((attribute) => {
@@ -67,19 +84,7 @@ export class FeatureService {
     });
   }
 
-  public getBrazil(): Promise<View> {
-    return new Promise((resolve: any) => {
-      resolve({
-        name: 'Brazil',
-        type: ViewType.BORDER,
-        description: 'Lorem',
-        visible: false,
-        data: brazil as GeoJSON.GeoJsonObject,
-      });
-    });
-  }
-
-  public getBrazilLabels(): Promise<View[]> {
+  public getAttributesBrazil(): Promise<View[]> {
     return new Promise((resolve: any) => {
       let firstVisible = true;
       const views = Object.keys(attributes).map((attribute) => {
@@ -98,20 +103,55 @@ export class FeatureService {
     });
   }
 
-  public getScenarios(): Promise<View[]> {
+  public getBorders(): Promise<View[]> {
     return new Promise((resolve: any) => {
-      let firstVisible = true;
-      const views = Object.keys(scenarios).map((scenario) => {
-        const isViewVisible = firstVisible;
-        firstVisible = false;
+      const views = [
+        {
+          name: 'None',
+          type: ViewType.BORDER,
+          description: 'No data',
+          visible: true,
+        },
+        {
+          name: 'Biomes',
+          type: ViewType.BORDER,
+          description: borders['Biomes'],
+          visible: false,
+          data: biomes as GeoJSON.GeoJsonObject,
+        },
+        {
+          name: 'Brazil',
+          type: ViewType.BORDER,
+          description: borders['Brazil'],
+          visible: false,
+          data: brazil as GeoJSON.GeoJsonObject,
+        },
+      ];
+
+      resolve(views);
+    });
+  }
+
+  public getBackgrounds(): Promise<View[]> {
+    return new Promise((resolve: any) => {
+      const views = Object.keys(backgrounds).map((background) => {
         return {
-          name: scenario,
-          type: ViewType.SCENARIO,
-          description: scenarios[scenario],
-          visible: isViewVisible,
+          name: background,
+          type: ViewType.BACKGROUND,
+          description: backgrounds[background],
+          visible: false,
+          url: `${process.env.PUBLIC_URL}/wms/${background}/{z}/{x}/{y}.png`,
         };
       });
 
+      const none: any = {
+        name: 'None',
+        type: ViewType.BACKGROUND,
+        description: 'No data',
+        visible: true,
+      };
+
+      views.unshift(none);
       resolve(views);
     });
   }
