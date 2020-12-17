@@ -205,19 +205,21 @@ export default function Leaflet() {
               let tooltipValue = fieldValue
                 .toFixed(2)
                 .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+              let iconSelected = iconEquals;
+
               if (TimelineOption.DIFFERENCE === state.currentTimelineOption) {
                 const fieldDiff = Number(properties[`D${fieldName}`]);
 
                 tooltipValue = fieldDiff
                   .toFixed(2)
                   .replace(/\d(?=(\d{3})+\.)/g, '$&,');
-              }
 
-              let iconSelected = iconEquals;
-              if (fieldResult === 'positive') {
-                iconSelected = iconPositive;
-              } else if (fieldResult === 'negative') {
-                iconSelected = iconNegative;
+                if (fieldResult === 'positive') {
+                  iconSelected = iconPositive;
+                } else if (fieldResult === 'negative') {
+                  iconSelected = iconNegative;
+                }
               }
 
               layers.push(
