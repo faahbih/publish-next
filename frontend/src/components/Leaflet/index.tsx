@@ -26,7 +26,7 @@ import { iconEquals, iconNegative, iconPositive } from './icons';
 import brazilLabels from 'assets/brazil-forest-code-labels.json';
 
 const defaultProperties = {
-  lat: -14.35143,
+  lat: -18.35143,
   lng: -49.01675,
   zoom: 4,
   color: {
@@ -43,7 +43,7 @@ const defaultProperties = {
 } as MapProperties;
 
 const userDefinedProperties = {
-  lat: -14.35143,
+  lat: -18.35143,
   lng: -49.01675,
   zoom: 4,
   color: {
@@ -228,8 +228,8 @@ export default function Leaflet() {
                 >
                   <Tooltip
                     className={'marker-class-name'}
-                    direction={'bottom'}
-                    offset={[0, 20]}
+                    direction={'right'}
+                    offset={[0, 0]}
                     opacity={0.9}
                     permanent
                   >

@@ -15,7 +15,6 @@ const scenarios: any = {
 };
 
 const attributes: any = {
-  Soybean: 'Lorem',
   Cropland: `Planted areas with the following crops:
   barley, dry beans, cassava, corn, cotton, groundnut, palm oil, potato,
   rice, sorghum, soybeans, sugarcane, sweet potato, wheat`,
@@ -110,13 +109,13 @@ export class FeatureService {
           name: 'None',
           type: ViewType.BORDER,
           description: 'No data',
-          visible: true,
+          visible: false,
         },
         {
           name: 'Biomes',
           type: ViewType.BORDER,
           description: borders['Biomes'],
-          visible: false,
+          visible: true,
           data: biomes as GeoJSON.GeoJsonObject,
         },
         {
