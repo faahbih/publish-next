@@ -1,23 +1,27 @@
-import React from 'react';
-
-import {
-  Map,
-  TileLayer,
-  ZoomControl,
-  GeoJSON,
-  Marker,
-  Tooltip,
-} from 'react-leaflet';
-
-import Report from 'components/Report';
-import { Layer } from 'leaflet';
 import Legend from 'components/Legend';
-import { MapProperties, View, ViewType } from 'containers/Types';
+import Report from 'components/Report';
 import Temporal from 'components/Temporal';
-import { FeatureService } from './feature.service';
+import {
+  MapProperties,
+  TimelineOption,
+  View,
+  ViewType,
+} from 'containers/Types';
+import { Layer } from 'leaflet';
+import React from 'react';
+import {
+  GeoJSON,
+  Map,
+  Marker,
+  TileLayer,
+  Tooltip,
+  ZoomControl,
+} from 'react-leaflet';
 import { useDispatch, useTrackedState } from 'store';
 import { filter } from 'store/utils';
-import { iconPositive, iconNegative, iconEquals } from './icons';
+
+import { FeatureService } from './feature.service';
+import { iconEquals, iconNegative, iconPositive } from './icons';
 
 const defaultProperties = {
   lat: -14.35143,
@@ -170,15 +174,18 @@ export default function Leaflet() {
 
               const fieldName = `${scenario}${attribute}${state.currentYear}`;
               const fieldValue = properties[fieldName];
-              // const fieldDiff = properties[`D${fieldName}`];
               const fieldResult = properties[`R${fieldName}`];
 
-              const fieldValueFormatted = fieldValue
+              let tooltipValue = fieldValue
                 .toFixed(2)
                 .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+              if (TimelineOption.DIFFERENCE === state.currentTimelineOption) {
+                const fieldDiff = Number(properties[`D${fieldName}`]);
 
-              const tooltipValue = fieldValueFormatted;
-              // TODO validar check box para usar dado da diferenca
+                tooltipValue = fieldDiff
+                  .toFixed(2)
+                  .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+              }
 
               let iconSelected = iconEquals;
               if (fieldResult === 'positive') {

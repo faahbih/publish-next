@@ -35,3 +35,8 @@ export type View = {
   description: string;
   data?: GeoJSON.GeoJsonObject;
 };
+
+export enum TimelineOption {
+  ABSOLUTE = 'Absolute values',
+  DIFFERENCE = 'Difference to 2000',
+}

@@ -14,6 +14,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import debounce from 'lodash.debounce';
+import { useDispatch, useTrackedState } from 'store';
+import { TimelineOption } from 'containers/Types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,27 +61,53 @@ const TempShadow =
 const marks = [
   {
     value: 0,
+    label: '2000',
+  },
+  {
+    value: 10,
+    label: '2005',
   },
   {
     value: 20,
+    label: '2010',
+  },
+  {
+    value: 30,
+    label: '2015',
   },
   {
     value: 40,
+    label: '2020',
+  },
+  {
+    value: 50,
+    label: '2025',
   },
   {
     value: 60,
+    label: '2030',
+  },
+  {
+    value: 70,
+    label: '2035',
   },
   {
     value: 80,
+    label: '2040',
+  },
+  {
+    value: 90,
+    label: '2045',
   },
   {
     value: 100,
+    label: '2050',
   },
 ];
 
 const TemporalSlider = withStyles({
   root: {
-    color: '#eb4b35',
+    color: '#757575',
     height: 2,
     padding: '16px 0',
   },
@@ -129,13 +158,77 @@ const TemporalSlider = withStyles({
 
 export default function Temporal() {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    checkedA: true,
+  const dispatch = useDispatch();
+  const state = useTrackedState();
+
+  const [sliderValue, setSliderValue] = React.useState<number | number[]>(0);
+  const [switchState, setSwitchState] = React.useState({
+    checkedA: false,
     checkedB: true,
   });
+  const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event.target.checked;
+    if (checked) {
+      dispatch({
+        type: 'SET_TIMELINE_OPTION',
+        option: TimelineOption.DIFFERENCE,
+      });
+    } else {
+      dispatch({
+        type: 'SET_TIMELINE_OPTION',
+        option: TimelineOption.ABSOLUTE,
+      });
+    }
+
+    setSwitchState({ ...switchState, [event.target.name]: checked });
+  };
+
+  const getSwitchLabel = (): string => {
+    return state.currentTimelineOption.valueOf();
+  };
+
+  const handleClickPlay = () => {
+    setButtonDisabled(true);
+
+    const indexMark = marks.findIndex((mark) => mark.value === sliderValue);
+    if (indexMark > -1) {
+      let index = 0;
+
+      const sliderEvent = { timeline: true };
+      handleChangeSlider(sliderEvent, 0);
+
+      const timelineInterval = setInterval(() => {
+        const position = marks[index];
+        console.log(index, position.label);
+        handleChangeSlider(sliderEvent, position.value);
+
+        index++;
+        if (index > indexMark) {
+          clearInterval(timelineInterval);
+          setButtonDisabled(false);
+        }
+      }, 500);
+    }
+  };
+
+  const handleChangeSlider = (
+    event: any,
+    newSliderValue: number | number[],
+  ) => {
+    if ((event && event.timeline) || sliderValue !== newSliderValue) {
+      setSliderValue(newSliderValue);
+
+      const debounceSlider = debounce(() => {
+        const mark = marks.find((mark) => mark.value === newSliderValue);
+        if (mark) {
+          dispatch({ type: 'SET_CURRENT_YEAR', year: Number(mark.label) });
+        }
+      }, 300);
+
+      debounceSlider();
+    }
   };
 
   return (
@@ -148,24 +241,32 @@ export default function Temporal() {
           control={
             <Switch
               size="small"
-              checked={state.checkedA}
-              onChange={handleChange}
+              checked={switchState.checkedA}
+              onChange={handleChangeSwitch}
               name="checkedA"
               color="primary"
             />
           }
-          label="Algum texto aqui"
+          label={getSwitchLabel()}
         />
 
         <div className={classes.content}>
-          <IconButton aria-label="play" className={classes.icon}>
+          <IconButton
+            aria-label="play"
+            className={classes.icon}
+            disabled={buttonDisabled}
+            onClick={handleClickPlay}
+          >
             <PlayArrowIcon />
           </IconButton>
           <TemporalSlider
             aria-label="slider"
-            defaultValue={40}
+            value={sliderValue}
+            step={null}
             marks={marks}
-            valueLabelDisplay="on"
+            valueLabelDisplay="off"
+            disabled={buttonDisabled}
+            onChange={handleChangeSlider}
           />
         </div>
       </Card>

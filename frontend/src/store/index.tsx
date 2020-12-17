@@ -1,4 +1,4 @@
-import { View, ViewType } from 'containers/Types';
+import { TimelineOption, View, ViewType } from 'containers/Types';
 import { useReducer } from 'react';
 import { createContainer } from 'react-tracked';
 
@@ -7,17 +7,21 @@ export type State = {
   currentScenario: string;
   currentAttribute: string;
   currentYear: number;
+  currentTimelineOption: TimelineOption;
   views: View[];
 };
 
 type Action =
   | { type: 'ADD_VIEW'; view: View }
-  | { type: 'TOGGLE_VIEW'; viewType: ViewType; name: string; visible: boolean };
+  | { type: 'TOGGLE_VIEW'; viewType: ViewType; name: string; visible: boolean }
+  | { type: 'SET_CURRENT_YEAR'; year: number }
+  | { type: 'SET_TIMELINE_OPTION'; option: TimelineOption };
 
 const initialState: State = {
   currentScenario: '',
   currentAttribute: '',
   currentYear: 2000,
+  currentTimelineOption: TimelineOption.ABSOLUTE,
   views: [],
 };
 
@@ -74,6 +78,16 @@ const reducer = (state: State, action: Action): State => {
       }
 
       return newState;
+    case 'SET_CURRENT_YEAR':
+      return {
+        ...state,
+        currentYear: action.year,
+      };
+    case 'SET_TIMELINE_OPTION':
+      return {
+        ...state,
+        currentTimelineOption: action.option,
+      };
     default:
       return state;
   }
