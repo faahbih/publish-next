@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
       '& > span': {
         marginLeft: '-8px',
       },
+      display: 'none',
     },
     hide: {
       display: 'none',
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing(7) + 4,
       },
+      display: 'none',
     },
     toolbar: {
       display: 'flex',
