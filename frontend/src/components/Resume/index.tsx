@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       flexDirection: 'row',
-      marginBottom: 8,
+      margin: '12px 16px 8px 16px',
       [theme.breakpoints.down('xs')]: {
         flexDirection: 'column',
         marginBottom: 16,
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: 24,
       [theme.breakpoints.down('xs')]: {
         marginLeft: 0,
+        marginTop: 8,
       },
       height: 30,
     },
@@ -51,6 +52,12 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
+      [theme.breakpoints.down('xs')]: {
+        justifyContent: 'center',
+        fontSize: '16px',
+        flexWrap: 'wrap',
+        textAlign: 'center',
+      },
     },
   }),
 );
