@@ -4,6 +4,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  FormControlLabel,
+  Switch,
   Typography,
 } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
@@ -55,6 +57,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function SideContent() {
   const classes = useStyles();
+  const [checked, setChecked] = React.useState(false);
+  const toggleChecked = () => {
+    setChecked((prev) => !prev);
+  };
 
   return (
     <Card className={classes.root}>
@@ -132,6 +138,19 @@ export default function SideContent() {
             </AccordionDetails>
           </Accordion>
         </div>
+
+        <FormControlLabel
+          style={{ marginTop: 16 }}
+          control={
+            <Switch
+              checked={checked}
+              onChange={toggleChecked}
+              color="primary"
+              size="small"
+            />
+          }
+          label="Hide description"
+        />
       </CardContent>
     </Card>
   );
