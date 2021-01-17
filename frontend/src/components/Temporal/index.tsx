@@ -164,13 +164,18 @@ export default function Temporal() {
   const state = useTrackedState();
 
   const [sliderValue, setSliderValue] = React.useState<number | number[]>(0);
-  const [switchState, setSwitchState] = React.useState({
+  const [
+    switchStateTimelineOption,
+    setSwitchStateTimelineOption,
+  ] = React.useState({
     checkedA: false,
     checkedB: true,
   });
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
 
-  const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeSwitchTimelineOption = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const checked = event.target.checked;
     if (checked) {
       dispatch({
@@ -184,8 +189,22 @@ export default function Temporal() {
       });
     }
 
-    setSwitchState({ ...switchState, [event.target.name]: checked });
+    setSwitchStateTimelineOption({
+      ...switchStateTimelineOption,
+      [event.target.name]: checked,
+    });
   };
+
+  // TODO issue #9
+  // const handleChangeSwitchMapTooltipToogle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const checked = event.target.checked;
+  //   dispatch({
+  //     type: 'SET_MAP_TOOLTIP',
+  //     enabled: checked,
+  //   });
+
+  //   setSwitchStateMapTooltipToogle({ ...switchStateMapTooltipToogle, [event.target.name]: checked });
+  // };
 
   const getSwitchLabel = (): string => {
     return state.currentTimelineOption.valueOf();
@@ -242,8 +261,8 @@ export default function Temporal() {
           control={
             <Switch
               size="small"
-              checked={switchState.checkedA}
-              onChange={handleChangeSwitch}
+              checked={switchStateTimelineOption.checkedA}
+              onChange={handleChangeSwitchTimelineOption}
               name="checkedA"
               color="primary"
             />
