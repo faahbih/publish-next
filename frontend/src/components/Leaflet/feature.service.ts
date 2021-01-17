@@ -28,9 +28,9 @@ const borders: any = {
 };
 
 const backgrounds: any = {
-  DS: 'Downscaling (1x1Km at Equator)',
-  CR: 'ColRow (50x50km at Equator)',
-  LU: 'Large Unit (200x200Km at Equator)',
+  '1x1km': '1x1Km at Equator (Downscaling - DS)',
+  '50x50km': '50x50km at Equator (ColRow - CR)',
+  '200x200km': '200x200Km at Equator (Large Unit - LU)',
 };
 
 export class FeatureService {
