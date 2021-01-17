@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '8px 26px 0',
     },
     switch: {
-      marginLeft: 0,
+      marginLeft: '60px',
+      marginBottom: '2px',
     },
     content: {
       display: 'flex',
