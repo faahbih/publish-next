@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button';
 
 import Main from 'layouts/Main';
 import SidebarList from './SidebarList';
-import { Icon } from '@material-ui/core';
+import { Icon, Tooltip } from '@material-ui/core';
 import Resume from 'components/Resume';
 import SideContent from 'components/SideContent';
 
@@ -107,6 +107,18 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    download: {
+      marginTop: '-5px',
+    },
+    link: {
+      color: '#fff',
+      textDecoration: 'none',
+    },
+    icon: {
+      marginRight: 8,
+      position: 'relative',
+      top: '7px',
+    },
   }),
 );
 
@@ -165,6 +177,18 @@ export default function Sidebar() {
               </Typography>
             </div>
             <div>
+              <Tooltip title="Download data" arrow>
+                <Button className={classes.download}>
+                  <a
+                    href="https://www.dropbox.com/s/aj1rwz3bu9td66n/restoreplus.zip?raw=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={classes.link}
+                  >
+                    Download <Icon className={classes.icon}>download</Icon>
+                  </a>
+                </Button>
+              </Tooltip>
               <Button onClick={handleResumeOpen} color="inherit">
                 About <Icon style={{ marginLeft: 8 }}>info_outlined</Icon>
               </Button>

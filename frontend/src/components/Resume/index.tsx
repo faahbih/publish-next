@@ -133,13 +133,6 @@ export default function Resume({ open, onClose }: ResumeProps) {
             and illegal deforestation at all times, which is driven by the
             demand for agricultural commodities, and does not include any policy
             restrictions. You can download the data used in this application by{' '}
-            <a
-              href="https://www.dropbox.com/s/aj1rwz3bu9td66n/restoreplus.zip?raw=1"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              clicking here
-            </a>
             .
           </DialogContentText>
 
