@@ -62,6 +62,17 @@ export default function SideContent() {
     setChecked((prev) => !prev);
   };
 
+  // TODO issue #9
+  // const handleChangeSwitchMapTooltipToogle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const checked = event.target.checked;
+  //   dispatch({
+  //     type: 'SET_MAP_TOOLTIP',
+  //     enabled: checked,
+  //   });
+
+  //   setSwitchStateMapTooltipToogle({ ...switchStateMapTooltipToogle, [event.target.name]: checked });
+  // };
+
   return (
     <Card className={classes.root}>
       <CardContent className={classes.cardContent}>
