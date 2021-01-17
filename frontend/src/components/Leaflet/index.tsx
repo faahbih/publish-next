@@ -182,6 +182,7 @@ export default function Leaflet() {
           const coords: any = [lat, lng];
 
           if (
+            state.mapTooltipsEnabled &&
             state.currentScenario &&
             state.currentAttribute &&
             state.currentYear

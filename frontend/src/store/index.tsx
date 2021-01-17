@@ -7,7 +7,9 @@ export type State = {
   currentScenario: string;
   currentAttribute: string;
   currentBorder: string;
+  currentBackground: string;
   currentYear: number;
+  mapTooltipsEnabled: boolean;
   currentTimelineOption: TimelineOption;
   views: View[];
 };
@@ -16,13 +18,16 @@ type Action =
   | { type: 'ADD_VIEW'; view: View }
   | { type: 'TOGGLE_VIEW'; viewType: ViewType; name: string; visible: boolean }
   | { type: 'SET_CURRENT_YEAR'; year: number }
-  | { type: 'SET_TIMELINE_OPTION'; option: TimelineOption };
+  | { type: 'SET_TIMELINE_OPTION'; option: TimelineOption }
+  | { type: 'SET_MAP_TOOLTIP'; enabled: boolean };
 
 const initialState: State = {
   currentScenario: '',
   currentAttribute: '',
   currentBorder: '',
+  currentBackground: '',
   currentYear: 2000,
+  mapTooltipsEnabled: true,
   currentTimelineOption: TimelineOption.ABSOLUTE,
   views: [],
 };
@@ -46,6 +51,10 @@ const reducer = (state: State, action: Action): State => {
 
         if (action.view.type === ViewType.BORDER) {
           newStateAddView.currentBorder = action.view.name;
+        }
+
+        if (action.view.type === ViewType.BACKGROUND) {
+          newStateAddView.currentBackground = action.view.name;
         }
       }
 
@@ -82,6 +91,12 @@ const reducer = (state: State, action: Action): State => {
 
         if (viewActive.type === ViewType.BORDER) {
           newState.currentBorder = viewActive.name;
+          newState.mapTooltipsEnabled =
+            viewActive.visible && viewActive.data !== undefined;
+        }
+
+        if (viewActive.type === ViewType.BACKGROUND) {
+          newState.currentBackground = viewActive.name;
         }
 
         newState.views = newViews;
@@ -97,6 +112,11 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         currentTimelineOption: action.option,
+      };
+    case 'SET_MAP_TOOLTIP':
+      return {
+        ...state,
+        mapTooltipsEnabled: action.enabled,
       };
     default:
       return state;
