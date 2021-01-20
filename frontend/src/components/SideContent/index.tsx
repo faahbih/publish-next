@@ -1,3 +1,6 @@
+import React from 'react';
+import { useDispatch, useTrackedState } from 'store';
+
 import './style.scss';
 
 import {
@@ -13,8 +16,6 @@ import CardContent from '@material-ui/core/CardContent';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ViewType } from 'containers/Types';
-import React from 'react';
-
 import SideChipList from './SideChipList';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -57,21 +58,25 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function SideContent() {
   const classes = useStyles();
-  const [checked, setChecked] = React.useState(false);
-  const toggleChecked = () => {
-    setChecked((prev) => !prev);
+  const dispatch = useDispatch();
+  const state = useTrackedState();
+
+  const [switchMapTooltip, setSwitchMapTooltip] = React.useState(
+    state.mapTooltipsEnabled,
+  );
+  const handleSwitchMapTooltip = () => {
+    const checked = !switchMapTooltip;
+    dispatch({
+      type: 'SET_MAP_TOOLTIP',
+      enabled: checked,
+    });
+
+    setSwitchMapTooltip(checked);
   };
 
-  // TODO issue #9
-  // const handleChangeSwitchMapTooltipToogle = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const checked = event.target.checked;
-  //   dispatch({
-  //     type: 'SET_MAP_TOOLTIP',
-  //     enabled: checked,
-  //   });
-
-  //   setSwitchStateMapTooltipToogle({ ...switchStateMapTooltipToogle, [event.target.name]: checked });
-  // };
+  const getSwitchLabel = (): string => {
+    return switchMapTooltip ? 'Map tooltips enabled' : 'Map tooltips disabled';
+  };
 
   return (
     <Card className={classes.root}>
@@ -154,13 +159,13 @@ export default function SideContent() {
           style={{ marginTop: 16 }}
           control={
             <Switch
-              checked={checked}
-              onChange={toggleChecked}
+              checked={switchMapTooltip}
+              onChange={handleSwitchMapTooltip}
               color="primary"
               size="small"
             />
           }
-          label="Hide description"
+          label={getSwitchLabel()}
         />
       </CardContent>
     </Card>
