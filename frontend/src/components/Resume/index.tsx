@@ -132,8 +132,7 @@ export default function Resume({ open, onClose }: ResumeProps) {
             restoration. The no forest code (NoFC) scenario allows both legal
             and illegal deforestation at all times, which is driven by the
             demand for agricultural commodities, and does not include any policy
-            restrictions. You can download the data used in this application by{' '}
-            .
+            restrictions.
           </DialogContentText>
 
           <div className={classes.imgContent}>
